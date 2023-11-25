@@ -36,6 +36,8 @@ Clients connect to the service which points at the master. During the 1 sec fail
 Error: Server closed the connection
 ```
 
+The python redis client uses a connection pool which can handle disconnects and won't error.
+
 When a new pod starts in an existing cluster it be a replica and do a full sync. A full sync takes ~10 sec for a db with 1 key.
 
 ## Resources
