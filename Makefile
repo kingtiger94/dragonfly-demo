@@ -21,6 +21,7 @@ cluster:
 
 ## deploy dragonfly to kubes
 dragonfly:
+# install the CRD and operator
 	kubectl apply -f https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/main/manifests/dragonfly-operator.yaml
 # create cluster with two replicas
 	kubectl apply -f https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/main/config/samples/v1alpha1_dragonfly.yaml
@@ -33,3 +34,11 @@ ping:
 ## show kube logs
 logs:
 	kubectl logs -l "app.kubernetes.io/name=dragonfly" -f --tail=-1
+
+## watch pods showing role ie: master/replica
+pods:
+	kubectl get pods -o custom-columns=":metadata.name, :status.phase, :metadata.labels.role" -l app.kubernetes.io/name=dragonfly --watch
+
+## delete master
+delete-master:
+	kubectl delete pod -l app.kubernetes.io/name=dragonfly -l role=master
