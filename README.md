@@ -38,11 +38,12 @@ Error: Server closed the connection
 
 The python redis client uses a connection pool which can handle disconnects and won't error.
 
-When a new pod starts in an existing cluster it be a replica and do a full sync. A full sync takes ~10 sec for a db with 1 key.
+When a new pod starts in an existing cluster it be a replica and do a full sync to reach the [stable sync state](https://github.com/dragonflydb/dragonfly/issues/1132).
+A full sync takes ~10 sec for a db with 1 key.
 
 ## Resources
 
-The operator watches the `dragonfly-sample` CRD which manages:
+The operator watches the `dragonfly-sample` [dragonfly CRD](https://github.com/dragonflydb/dragonfly-operator/blob/main/api/v1alpha1/dragonfly_types.go) which manages:
 
 - 2 pods, one master, one replica
 - A service pointing at the master
@@ -50,3 +51,4 @@ The operator watches the `dragonfly-sample` CRD which manages:
 ## References
 
 - [Install Dragonfly Kubernetes Operator](https://www.dragonflydb.io/docs/managing-dragonfly/operator/installation)
+- [The operator upgrades replicas before the master](https://github.com/dragonflydb/dragonfly-operator/issues/61)
