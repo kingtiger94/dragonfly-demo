@@ -9,5 +9,9 @@ spec:
     port: 6379
     protocol: TCP
     targetPort: 6379
+  # matches the dragonfly-sample service selector
+  # TODO: can we point at that instead of copying it?
   selector:
     app: dragonfly-sample
+    app.kubernetes.io/name: dragonfly
+    role: master
