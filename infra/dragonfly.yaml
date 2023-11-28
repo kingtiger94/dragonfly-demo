@@ -1,5 +1,6 @@
 # adapted from https://github.com/dragonflydb/dragonfly-operator/blob/d28c5ac1c3bfbe13b917560bc5f22261acd6de77/config/samples/v1alpha1_dragonfly.yaml
 
+# see crd at https://github.com/dragonflydb/dragonfly-operator/blob/d28c5ac1c3bfbe13b917560bc5f22261acd6de77/api/v1alpha1/dragonfly_types.go
 apiVersion: dragonflydb.io/v1alpha1
 kind: Dragonfly
 metadata:
@@ -11,6 +12,9 @@ metadata:
     app.kubernetes.io/created-by: dragonfly-operator
   name: dragonfly-sample
 spec:
+  # pin instead of using the operator default
+  # defined here https://github.com/dragonflydb/dragonfly-operator/blob/d28c5ac1c3bfbe13b917560bc5f22261acd6de77/internal/resources/resources.go#L52
+  image: docker.dragonflydb.io/dragonflydb/dragonfly:v1.12.1
   replicas: 2
   resources:
     requests:
