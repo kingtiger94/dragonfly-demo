@@ -24,7 +24,7 @@ dragonfly:
 # install the CRD and operator
 	kubectl apply -f https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/main/manifests/dragonfly-operator.yaml
 # create cluster with two replicas
-	kubectl apply -f https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/main/config/samples/v1alpha1_dragonfly.yaml
+	kubectl apply -f infra/dragonfly.yaml
 	kubectl apply -f infra/ingress.yaml
 
 ## ping
