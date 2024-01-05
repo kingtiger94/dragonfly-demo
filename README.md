@@ -46,14 +46,17 @@ A full sync takes ~10 sec for a db with 1 key, when the database is [not persist
 The [operator](https://github.com/dragonflydb/dragonfly-operator/blob/main/manifests/dragonfly-operator.yaml) creates:
 
 - [CRD](https://github.com/dragonflydb/dragonfly-operator/blob/main/api/v1alpha1/dragonfly_types.go) `dragonflies.dragonflydb.io`
-- ClusterRoles `dragonfly-operator-manager-role`, `dragonfly-operator-metrics-reader`, `dragonfly-operator-proxy-role`
+- ClusterRoles
+  - `dragonfly-operator-manager-role` manages pods, services, statefulsets, dragonflies
+  - `dragonfly-operator-metrics-reader` can get _/metrics_ protected by kube-rbac-proxy
+  - `dragonfly-operator-proxy-role` can create tokenreviews and subjectaccessreviews (needed by [kube-rbac-proxy](https://github.com/brancz/kube-rbac-proxy?tab=readme-ov-file#how-does-it-work))
 
-and the following in the `dragonfly-operator-system` namespace:
+and the following in the `dragonfly-operator` namespace:
 
-- ServiceAccount `dragonfly-operator-controller-manager` bound to `dragonfly-operator-manager-role`, `dragonfly-operator-proxy-role`
-- Role `dragonfly-operator-leader-election-role`
-- Service `dragonfly-operator-controller-manager-metrics-service`
-- Deployment `dragonfly-operator-controller-manager` with 1 replica
+- Role `dragonfly-operator-leader-election-role` manages configmaps, leases
+- ServiceAccount `dragonfly-operator-controller-manager` bound to `dragonfly-operator-manager-role`, `dragonfly-operator-proxy-role`, `dragonfly-operator-controller-manager`
+- Service `dragonfly-operator-controller-manager-metrics-service` which exposes kube-rbac-proxy via https port 8443. kube-rbac-proxy authorizes access to the _/metrics_ endpoint by requiring the `dragonfly-operator-metrics-reader` reader role.
+- Deployment `dragonfly-operator-controller-manager` of 1 replica containing the [operator](https://github.com/dragonflydb/dragonfly-operator) and [kube-rbac-proxy](https://github.com/brancz/kube-rbac-proxy)
 
 We create [dragonfly-sample](infra/dragonfly.yaml) which the operator watches and then creates:
 
