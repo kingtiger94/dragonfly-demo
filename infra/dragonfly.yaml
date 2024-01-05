@@ -14,7 +14,7 @@ metadata:
 spec:
   # pin instead of using the operator default
   # defined here https://github.com/dragonflydb/dragonfly-operator/blob/d28c5ac1c3bfbe13b917560bc5f22261acd6de77/internal/resources/resources.go#L52
-  image: docker.dragonflydb.io/dragonflydb/dragonfly:v1.12.1
+  image: docker.dragonflydb.io/dragonflydb/dragonfly:v1.13.0
   replicas: 2
   resources:
     requests:
