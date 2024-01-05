@@ -50,11 +50,14 @@ The [operator](https://github.com/dragonflydb/dragonfly-operator/blob/main/manif
   - `dragonfly-operator-manager-role` manages pods, services, statefulsets, dragonflies
   - `dragonfly-operator-metrics-reader` can get _/metrics_ protected by kube-rbac-proxy
   - `dragonfly-operator-proxy-role` can create tokenreviews and subjectaccessreviews (needed by [kube-rbac-proxy](https://github.com/brancz/kube-rbac-proxy?tab=readme-ov-file#how-does-it-work))
+- Namespace `dragonfly-operator-system`
 
-and the following in the `dragonfly-operator` namespace:
+and the following in the `dragonfly-operator-system` namespace:
 
 - Role `dragonfly-operator-leader-election-role` manages configmaps, leases
-- ServiceAccount `dragonfly-operator-controller-manager` bound to `dragonfly-operator-manager-role`, `dragonfly-operator-proxy-role`, `dragonfly-operator-controller-manager`
+- ServiceAccount `dragonfly-operator-controller-manager` bound to
+  - ClusterRoles: `dragonfly-operator-manager-role`, `dragonfly-operator-proxy-role`
+  - Role: `dragonfly-operator-leader-election-role`
 - Service `dragonfly-operator-controller-manager-metrics-service` which exposes kube-rbac-proxy via https port 8443. kube-rbac-proxy authorizes access to the _/metrics_ endpoint by requiring the `dragonfly-operator-metrics-reader` reader role.
 - Deployment `dragonfly-operator-controller-manager` of 1 replica containing the [operator](https://github.com/dragonflydb/dragonfly-operator) and [kube-rbac-proxy](https://github.com/brancz/kube-rbac-proxy)
 

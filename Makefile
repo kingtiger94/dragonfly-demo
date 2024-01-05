@@ -4,7 +4,7 @@ cluster?=dragonfly
 export KUBECONFIG=$(HOME)/.k3d/kubeconfig-$(cluster).yaml
 
 ## install redis cli, create cluster, and deploy dragonfly
-install: redis-cli cluster dragonfly
+install: redis-cli cluster operator dragonfly
 
 ## install redis cli
 redis-cli:
@@ -19,11 +19,18 @@ cluster:
 	@echo -e "\nTo use your cluster set:\n"
 	@echo "export KUBECONFIG=$(KUBECONFIG)"
 
+## install the CRD and operator
+operator:
+	kubectl apply -f https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/main/manifests/dragonfly-operator.yaml
+
+## install the scoped operator
+scoped-operator:
+	kubectl apply -f infra/operator-crd.yaml
+	kubectl apply -f infra/operator-cluster.yaml
+	kubectl apply -f infra/operator-manager-role.yaml
+
 ## deploy dragonfly to kubes
 dragonfly:
-# install the CRD and operator
-	kubectl apply -f https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/main/manifests/dragonfly-operator.yaml
-# create cluster with two replicas
 	kubectl apply -f infra/dragonfly.yaml
 	kubectl apply -f infra/ingress.yaml
 
