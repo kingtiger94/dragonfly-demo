@@ -49,3 +49,6 @@ pods:
 ## delete master
 delete-master:
 	kubectl delete pod -l app.kubernetes.io/name=dragonfly -l role=master
+
+get-operator:
+	kubectl get pod -l control-plane=controller-manager --namespace dragonfly-operator-system
