@@ -1,0 +1,17 @@
+# Taken from:
+# https://github.com/dragonflydb/dragonfly-operator/blob/d7d06202da0c4da9f56f817521053661f15031a0/manifests/dragonfly-operator.yaml
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    app.kubernetes.io/component: manager
+    app.kubernetes.io/created-by: dragonfly-operator
+    app.kubernetes.io/instance: system
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: namespace
+    app.kubernetes.io/part-of: dragonfly-operator
+    control-plane: controller-manager
+  name: dragonfly-operator-system
+---
+

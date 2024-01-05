@@ -25,10 +25,11 @@ operator:
 
 ## install the scoped operator
 scoped-operator:
-	kubectl apply -f infra/operator-cluster.yaml
-	kubectl apply -f infra/operator-crd.yaml
-	kubectl apply -f infra/operator-deployment.yaml
-	kubectl apply -f infra/operator-manager-role.yaml
+	kubectl apply -f infra/operator/cluster-wide/operator-namespace.yaml
+	kubectl apply -f infra/operator/cluster-wide/operator-crd.yaml
+	kubectl apply -f infra/operator/cluster-wide/operator-role.yaml
+	kubectl apply -f infra/operator/namespaced/operator-deployment.yaml
+	kubectl apply -f infra/operator/namespaced/operator-role.yaml
 
 ## deploy dragonfly to kubes
 dragonfly:
