@@ -38,12 +38,24 @@ Error: Server closed the connection
 
 The python redis client uses a connection pool which can handle disconnects and won't error.
 
-When a new pod starts in an existing cluster it be a replica and do a full sync to reach the [stable sync state](https://github.com/dragonflydb/dragonfly/issues/1132).
-A full sync takes ~10 sec for a db with 1 key.
+When a new pod starts in an existing cluster its a replica and does a full sync to reach the [stable sync state](https://github.com/dragonflydb/dragonfly/issues/1132).
+A full sync takes ~10 sec for a db with 1 key, when the database is [not persisted to disk](https://www.dragonflydb.io/docs/managing-dragonfly/operator/snapshot-pvc).
 
 ## Resources
 
-The operator watches the `dragonfly-sample` [dragonfly CRD](https://github.com/dragonflydb/dragonfly-operator/blob/main/api/v1alpha1/dragonfly_types.go) which manages:
+The [operator](https://github.com/dragonflydb/dragonfly-operator/blob/main/manifests/dragonfly-operator.yaml) creates:
+
+- [CRD](https://github.com/dragonflydb/dragonfly-operator/blob/main/api/v1alpha1/dragonfly_types.go) `dragonflies.dragonflydb.io`
+- ClusterRoles `dragonfly-operator-manager-role`, `dragonfly-operator-metrics-reader`, `dragonfly-operator-proxy-role`
+
+and the following in the `dragonfly-operator-system` namespace:
+
+- ServiceAccount `dragonfly-operator-controller-manager` bound to `dragonfly-operator-manager-role`, `dragonfly-operator-proxy-role`
+- Role `dragonfly-operator-leader-election-role`
+- Service `dragonfly-operator-controller-manager-metrics-service`
+- Deployment `dragonfly-operator-controller-manager` with 1 replica
+
+We create [dragonfly-sample](infra/dragonfly.yaml) which the operator watches and then creates:
 
 - 2 pods, one master, one replica
 - A service pointing at the master
