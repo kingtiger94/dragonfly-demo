@@ -25,8 +25,9 @@ operator:
 
 ## install the scoped operator
 scoped-operator:
-	kubectl apply -f infra/operator-crd.yaml
 	kubectl apply -f infra/operator-cluster.yaml
+	kubectl apply -f infra/operator-crd.yaml
+	kubectl apply -f infra/operator-deployment.yaml
 	kubectl apply -f infra/operator-manager-role.yaml
 
 ## deploy dragonfly to kubes
