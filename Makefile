@@ -19,12 +19,12 @@ cluster:
 	@echo -e "\nTo use your cluster set:\n"
 	@echo "export KUBECONFIG=$(KUBECONFIG)"
 
-## install the CRD and operator
+## install the stock CRD and operator
 operator:
 	kubectl apply -f https://raw.githubusercontent.com/dragonflydb/dragonfly-operator/main/manifests/dragonfly-operator.yaml
 
-## install the scoped operator
-scoped-operator:
+## install the CRD and least-privilege operator
+lp-operator:
 	kubectl apply -f infra/operator/cluster-wide/operator-namespace.yaml
 	kubectl apply -f infra/operator/cluster-wide/operator-crd.yaml
 	kubectl apply -f infra/operator/cluster-wide/operator-role.yaml
